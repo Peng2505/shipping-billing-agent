@@ -1,0 +1,15 @@
+# Runtime dependencies (verified on Python 3.11, Windows 10/11).
+langchain>=1.4,<2            # Agent (create_agent) - required by the assignment
+langchain-openai>=1.7,<2     # OpenAI-compatible chat models (configurable base_url)
+pydantic>=2.7,<3             # schemas and structured output
+python-dotenv>=1.0           # .env loading
+httpx>=0.27,<1               # OCR API client
+PyMuPDF>=1.26,<1.28          # PDF text layer / tables / preview. 2.0 crashes on import in our test env
+Pillow>=10                   # image metadata (JPG/PNG/TIFF)
+openpyxl>=3.1                # XLSX
+xlrd>=2.0                    # XLS (legacy Excel)
+python-docx>=1.1             # DOCX (DOC is converted with LibreOffice if installed)
+beautifulsoup4>=4.12         # HTML e-mail body to text
+oss2>=2.18                   # Aliyun OSS official SDK (private bucket + signed URL)
+PyYAML>=6.0                  # charge alias dictionary
+streamlit>=1.40              # Web UI

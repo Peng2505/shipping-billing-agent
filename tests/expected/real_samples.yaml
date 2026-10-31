@@ -1,0 +1,109 @@
+# Manually verified expectations for the recruiter-provided samples in data/samples/.
+# Each value was read from the original document by a human; `evidence` notes where.
+# Business code MUST NOT read this file. Only tests use it.
+# `parsing` = Phase 1 expectations; `extraction` / `decision` = Phase 2/3 expectations.
+
+eml_pre_alert:
+  file_glob: "*PRE-ALERT SSZSE26093128*.eml"
+  parsing:
+    detected_type: eml
+    subject_contains: ["PRE-ALERT", "SSZSE26093128", "TIIU8975975", "OOLU4055331281"]
+    from_contains: "luka@pltplt.com"
+    to_contains: "li@pltplt.com"
+    body_plain_contains: ["SHA pay TAR", "H/C $50", "Carrier Free H/C", "OOLU4055331281"]
+    body_html_present: true
+    attachments:
+      - {file_name: "4055331281 MBL.pdf", declared_mime: "application/octet-stream", detected_type: pdf, text_contains: ["TIIU8975975", "TARGETING A INC"]}
+      - {file_name: "4055331281 HBL.pdf", declared_mime: "application/octet-stream", detected_type: pdf, text_contains: ["SSZSE26093128", "VASINGER LLC", "FREIGHT PREPAID"]}
+    inline_images:
+      - {file_name: "InsertPic_C25B.jpg", detected_type: jpg}
+  extraction:
+    charges:
+      - raw_name: "H/C"
+        nature: actual
+        amount: "50"
+        currency: null          # only "$" symbol; not converted to USD
+        evidence: "body: SHA pay TAR：H/C $50"
+    not_charges:
+      - {text: "Carrier Free H/C", reason: waived}
+    bl_no: "OOLU4055331281"
+    container_no: "TIIU8975975"
+    issuer: null                # SHA / TAR are unresolved abbreviations
+    recipient: null
+  decision:
+    operation: PENDING_REVIEW
+    reasons: [CURRENCY_UNCONFIRMED, PARTY_UNRESOLVED]
+
+pdf_sample_1:
+  file_name: "PDF示例账单1.pdf"
+  parsing:
+    detected_type: pdf
+    page_count: 3
+    text_layer_contains: ["CMDUCHN4053601", "SAPU2040689", "245.0000", "OCA17", "TOTAL CHARGES TO BE PAID"]
+  extraction:
+    document_type: "Arrival Notice"
+    reference_no: null
+    bl_no: "CMDUCHN4053601"
+    container_no: "SAPU2040689"
+    charges:
+      - {raw_name: "On Carriage Additional - US Em", charge_code: "OCA17", nature: actual, amount: "245.00", currency: USD}
+    excluded_amounts:
+      - {amount: "25.00", nature: conditional, evidence: "SERVICE FEE OF $25.00 PER CANCELLED I.T."}
+      - {amount: "1100", nature: conditional, evidence: "misuse fee of $1100"}
+      - {amount: "150", nature: conditional, evidence: "billed $150 per hour"}
+    total: {amount: "245.00", evidence: "TOTAL CHARGES TO BE PAID: 245.0000"}
+  decision:
+    charge_count: 1
+    # issuer/recipient not established from Remit-to alone; posting_type depends on accounting_entity.
+    operation_if_party_unresolved: PENDING_REVIEW
+
+pdf_sample_2:
+  file_name: "PDF 示例账单2.pdf"
+  parsing:
+    detected_type: pdf
+    page_count: 1
+    text_layer_contains: ["DC-108478", "HANDLING CHARGE", "1,310.40", "1410.40", "BALANCE DUE TO NEPTUNE SHIPPING LIMITED"]
+  extraction:
+    document_type: "Debit Note"
+    reference_no: "DC-108478"
+    document_date: "2026-10-24"   # MM-DD-YYYY proven in-file by 08-30-2026 and 10-28-2026
+    bl_no: "MAEU275752922"
+    house_bl_no: "CGT260801188"
+    container_nos: ["MRSU2571577", "TCLU8619685"]
+    currency: USD
+    charges:
+      - {line: 1, raw_name: "HANDLING CHARGE", amount: "65.00", currency: USD, pc: "C"}
+      - {line: 2, raw_name: "4 ADD'L DETENTION FREE TIME CHARGE", amount: "1310.40", currency: USD, pc: "C"}
+      - {line: 3, raw_name: "HANDLING CHARGE", amount: "35.00", currency: USD, pc: "C"}
+    total: "1410.40"
+    not_charges: ["TOTAL 1410.40", "PAID AMOUNT 0.00"]
+    payee: "NEPTUNE SHIPPING LIMITED (LAX)"
+    recipient: null               # not present in text layer
+  decision:
+    charge_count: 3
+    duplicates: []                # lines 1 and 3 share a name but are distinct line items
+    posting_type_if_entity_is_neptune: AR
+
+png_sample:
+  file_name: "图片示例.png"
+  parsing:
+    detected_type: png
+    requires_ocr: true
+  extraction:
+    document_type: "Invoice"
+    reference_no: "ORFR1618731"
+    document_date: null           # "10/03/2025" vs signature "03/10/2025": format not provable in-file
+    document_date_raw: "10/03/2025"
+    issuer_contains: "ZIM American Integrated Shipping Services"
+    recipient_contains: "ALL AMERICA FORWARDING"
+    booking_no: "ZIMUNGB1312144"
+    bl_no: "ZIMUNGB1312144"
+    container_no: "JXLU4504463"
+    charges:
+      - {raw_name: "WHARFAGE ADMINISTRATION FEE", amount: "5.00", currency: USD, quantity: null}
+      - {raw_name: "WHARFAGE", amount: "21.90", currency: USD, quantity: null}   # do not derive 21.90/2.85
+    total: "26.90"
+    payment_term_raw: "PAY IMMEDIATELY"
+    payment_term: null
+  decision:
+    charge_count: 2

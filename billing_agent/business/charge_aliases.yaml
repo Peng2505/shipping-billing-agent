@@ -1,0 +1,47 @@
+# Deterministic charge-name alias dictionary.
+# Keys are normalised (upper-case, punctuation collapsed). Values are standard names.
+# Context rules (waived / free / conditional) are applied in charge_normalizer.py
+# BEFORE this map is used for actual-fee standardisation.
+
+aliases:
+  HANDLING FEE: Handling Charge
+  HANDLING CHARGE: Handling Charge
+  H/D FEE: Handling Charge
+  H/D: Handling Charge
+  HD FEE: Handling Charge
+  H/C: Handling Charge
+  H/C FEE: Handling Charge
+  HC FEE: Handling Charge
+  DOC FEE: Documentation Fee
+  DOCUMENTATION FEE: Documentation Fee
+  DOCUMENT FEE: Documentation Fee
+  THC: Terminal Handling Charge
+  TERMINAL HANDLING CHARGE: Terminal Handling Charge
+  TERMINAL HANDLING FEE: Terminal Handling Charge
+  TRUCKING FEE: Trucking Charge
+  TRUCKING CHARGE: Trucking Charge
+  CUSTOMS FEE: Customs Clearance Fee
+  CUSTOMS CLEARANCE FEE: Customs Clearance Fee
+  STORAGE FEE: Storage Charge
+  STORAGE CHARGE: Storage Charge
+
+# Patterns that indicate a charge mention is NOT an actual billable line.
+# Matched against surrounding context (case-insensitive).
+waived_context_patterns:
+  - "carrier free"
+  - "free h/c"
+  - "free handling"
+  - "waived"
+  - "no charge"
+  - "n/c"
+  - "complimentary"
+
+conditional_context_patterns:
+  - "will be assessed"
+  - "if .* cancelled"
+  - "may result"
+  - "subject to"
+  - "per hour"
+  - "per cancelled"
+  - "in the event"
+  - "effective on"

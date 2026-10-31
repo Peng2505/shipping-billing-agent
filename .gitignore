@@ -1,0 +1,45 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# screenshots/ 为正式人工验收证据目录，允许纳入版本控制。
+# 保留 PDF1 / PDF2 / EML / PNG / Synthetic 子目录及已验收截图。
+# 提交前须人工检查：不得含 API Key、访问令牌、完整临时 Tunnel/签名 URL。
+# 切勿将整个 screenshots/ 加入本文件忽略列表。
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# runtime artefacts
+output/*
+!output/.gitkeep
+tmp/
+*.log
+
+# local probe binaries (download via Quick Start / manually)
+tools/cloudflared.exe
+tools/cloudflared
+tools/*.exe
+
+# Cloudflare Worker local
+workers/**/node_modules/
+workers/**/.wrangler/
+workers/**/.dev.vars
+workers/**/dist/
+
+# editors / OS / local agent
+.idea/
+.vscode/
+.cursor/
+Thumbs.db
+.DS_Store
+output/demo_session/

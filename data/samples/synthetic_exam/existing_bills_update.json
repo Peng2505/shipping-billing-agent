@@ -1,0 +1,20 @@
+{
+  "_synthetic": true,
+  "bills": [
+    {
+      "_synthetic": true,
+      "bill_id": "SYN-EXAM-HC-100",
+      "document_type": "Debit Note",
+      "reference_no": "DC-FINAL-9001",
+      "issuer": "NEPTUNE SHIPPING LIMITED",
+      "recipient": "ACME FREIGHT CONSIGNEE LLC",
+      "bl_no": "LTFINALMBL9001",
+      "charge_item": "Handling Charge",
+      "charge_item_raw": "HANDLING CHARGE",
+      "amount": "100.00",
+      "currency": "USD",
+      "accounting_entity": "NEPTUNE SHIPPING LIMITED",
+      "posting_type": "AR"
+    }
+  ]
+}
