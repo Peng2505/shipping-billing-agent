@@ -36,7 +36,7 @@
 
 ## 3. LangChain Agent 设计
 
-- 单一 Extraction Agent（不做多 Agent 炫技）
+- 单一 Extraction Agent
 - 只读工具：按 `block_id` 回查原文 / 表格
 - Structured Output：优先兼容 OpenAI 风格；DeepSeek 思考模式需关闭
 - Grounding：字段须能回指文档；无法确认 → `null` / `PENDING_REVIEW`
