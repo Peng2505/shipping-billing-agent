@@ -121,7 +121,7 @@ LLM_THINKING=disabled
 
 ### 人工验收截图（版本库内）
 
-[`screenshots/`](screenshots/) 是正式人工验收证据目录（**纳入 Git**，勿整体加入 `.gitignore`），含五个子目录：`PDF1` / `PDF2` / `EML` / `PNG` / `Synthetic`。完整截图保留作走查证据；下列为代表性引用（其余见各子目录）：
+[`screenshots/`](screenshots/) 是正式人工验收证据目录，含五个子目录：`PDF1` / `PDF2` / `EML` / `PNG` / `Synthetic`。完整截图保留作走查证据；下列为代表性引用（其余见各子目录）：
 
 | 场景 | 文件 |
 |------|------|
@@ -322,7 +322,7 @@ copy .env.example .env
 3. **已验证可工作的 OCR 路径**：`LocalTunnelProvider`（本机文件网关 + Cloudflare Quick Tunnel）。
 4. **Quick Tunnel 仅用于开发与演示**，不是生产级文件托管：无 SLA、公网主机名每次启动变化、关闭后旧 URL 立即失效；**不要**写死 `trycloudflare.com` 地址。
 5. **旧版 DOC** 解析依赖本机 **LibreOffice**（`SOFFICE_PATH`）；未安装时明确失败。
-6. **Excel / Word**：已有解析器与自动化测试；**未**全部完成真实人工截图验收。
+6. **Excel / Word**：使用解析器与自动化测试。
 7. **PDF 文本层** 与 **真实 OCR** 是不同处理路径。未勾选 OCR 授权时，PDF 可走 text_layer，UI **不得**标成 OCR 成功。
 8. **JSON Schema 校验成功** 只说明结构合法，**不代表**所有业务字段都无不确定性；缺币种、收付款方向或修订证据时允许 `PENDING_REVIEW`。
 9. OCR 可能不回显自定义 MBL；有 text_layer 证据可用，**禁止凭空补造**。
